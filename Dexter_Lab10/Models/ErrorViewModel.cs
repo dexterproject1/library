@@ -1,4 +1,4 @@
-namespace Dexter_Lab10.Models
+namespace library.Models
 {
     public class ErrorViewModel
     {
