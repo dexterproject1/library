@@ -1,0 +1,32 @@
+﻿@model List<Note>
+@{
+    ViewData["Title"] = "Notes";
+}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Notes</h1>
+    <a asp-action="Create" class="btn btn-primary">Add a note</a>
+</div>
+<table class="table table-striped align-middle">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Body</th>
+            <th>Created On</th>
+            <th class="text-end">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var note in Model)
+        {
+            <tr>
+                <td>@note.Title</td>
+                <td>@(note.Body ?? "-")</td>
+                <td>@note.CreatedOn.ToString("yyyy-MM-dd")</td>
+                <td class="text-end">
+                    <a asp-action="Edit" asp-route-id="@note.NoteId" class="btn btn-sm btn-outline-secondary">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@note.NoteId" class="btn btn-sm btn-outline-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
