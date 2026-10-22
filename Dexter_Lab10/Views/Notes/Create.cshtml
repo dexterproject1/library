@@ -1,0 +1,33 @@
+﻿@model library.Models.Note
+@{
+    ViewData["Title"] = "Create Note";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-body p-4">
+                <h2 class="card-title mb-4 font-weight-bold">Add a New Note</h2>
+
+                <form asp-action="Create" method="post">
+                    <div class="mb-3">
+                        <label asp-for="Title" class="form-label font-weight-bold">Title</label>
+                        <input asp-for="Title" class="form-control" placeholder="Enter note title..." required />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Body" class="form-label font-weight-bold">Body</label>
+                        <textarea asp-for="Body" class="form-control" rows="5" placeholder="Enter note details (optional)..."></textarea>
+                        <span asp-validation-for="Body" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary px-4">Save Note</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
