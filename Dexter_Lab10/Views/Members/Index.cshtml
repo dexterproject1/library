@@ -1,39 +1,26 @@
-﻿@model List<Member>
-@{
-    ViewData["Title"] = "Members";
-}
+﻿-- notes.sql : the notepad table for the Midterm Practical
+-- Run this once in the Supabase SQL Editor. It removes any existing note table and rebuilds it.
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <div>
-        <h1 class="mb-0">Members</h1>
-        <p class="text-muted mb-0">@Model.Count members in the system</p>
-    </div>
-    <a asp-action="Create" class="btn btn-primary">Add a member</a>
-</div>
+ 
+DROP TABLE IF EXISTS lending.note;
 
-<table class="table table-striped table-hover align-middle">
-    <thead class="table-dark">
-        <tr>
-            <th class="text-end" style="width:4rem">#</th>
-            <th>Full Name</th>
-            <th>Email</th>
-            <th>Type</th>
-            <th style="width:10rem"></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var member in Model)
-        {
-            <tr>
-                <td class="text-end">@member.MemberId</td>
-                <td>@member.FullName</td>
-                <td><span class="badge text-bg-secondary">@(member.Email ?? "—")</span></td>
-                <td>@member.MemberType</td>
-                <td class="text-end">
-                    <a asp-action="Edit" asp-route-id="@member.MemberId" class="btn btn-sm btn-outline-secondary">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@member.MemberId" class="btn btn-sm btn-outline-danger">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+ 
+CREATE TABLE lending.note (
+  note_id     BIGINT        GENERATED ALWAYS AS IDENTITY,
+  title       VARCHAR(100)  NOT NULL,
+  body        TEXT,
+  created_on  DATE          NOT NULL DEFAULT CURRENT_DATE,
+  CONSTRAINT pk_note PRIMARY KEY (note_id)
+
+);
+ 
+INSERT INTO lending.note (title, body, created_on) VALUES
+  ('Order new textbooks',    'Ask the dean''s office for the budget before Friday.', '2026-10-01'),
+  ('Shelf C is full',        NULL,                                                   '2026-10-03'),
+  ('Library week poster',    'Theme: read local. Use the Benguet photos.',           '2026-10-05'),
+  ('Return the projector',   NULL,                                                   '2026-10-06'),
+  ('Check overdue loans',    'Members with books out longer than 14 days.',          '2026-10-08'),
+  ('Wi-Fi password changed', NULL,                                                   '2026-10-09'),
+  ('Inventory count',        'Count the Classic section first.',                     '2026-10-12');
+
+SELECT COUNT(*) AS notes, COUNT(body) AS with_body FROM lending.note;
