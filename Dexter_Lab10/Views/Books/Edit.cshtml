@@ -1,39 +1,51 @@
-﻿@model Book
+﻿@model library.Models.Book
 @{
-    ViewData["Title"] = "Edit a book";
+    var isEdit = Model.BookId > 0;
+    ViewData["Title"] = isEdit ? "Edit a book" : "Add a book";
 }
 
-<h1 class="mb-3">Edit a book</h1>
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-body p-4 p-md-5">
+                <h2 class="fw-bold mb-4">@(isEdit ? "Edit Book" : "Add a New Book")</h2>
 
-<form asp-action="Edit" method="post" class="card card-body" style="max-width:36rem">
-    <input type="hidden" asp-for="BookId" />
+                <form asp-action="@(isEdit ? "Edit" : "Create")" method="post">
+                    @if (isEdit)
+                    {
+                        <input type="hidden" asp-for="BookId" />
+                    }
 
-    <div class="mb-3">
-        <label asp-for="Title" class="form-label"></label>
-        <input asp-for="Title" class="form-control" />
-        <span asp-validation-for="Title" class="text-danger"></span>
+                    <div class="mb-3">
+                        <label asp-for="Title" class="form-label fw-semibold">Title</label>
+                        <input asp-for="Title" class="form-control form-control-lg" placeholder="Enter book title..." />
+                        <span asp-validation-for="Title" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Category" class="form-label fw-semibold">Category</label>
+                        <select asp-for="Category" class="form-select form-select-lg">
+                            <option value="">(none)</option>
+                            <option>Classic</option>
+                            <option>Fiction</option>
+                            <option>Poetry</option>
+                            <option>Reference</option>
+                            <option>Textbook</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Price" class="form-label fw-semibold">Price</label>
+                        <input asp-for="Price" class="form-control form-control-lg" placeholder="0.00" />
+                        <span asp-validation-for="Price" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center pt-2">
+                        <a asp-action="Index" class="btn btn-outline-secondary px-4">Cancel</a>
+                        <button type="submit" class="btn btn-primary px-4">Save Book</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-
-    <div class="mb-3">
-        <label asp-for="Category" class="form-label"></label>
-        <select asp-for="Category" class="form-select">
-            <option value="">(none)</option>
-            <option>Classic</option>
-            <option>Fiction</option>
-            <option>Poetry</option>
-            <option>Reference</option>
-            <option>Textbook</option>
-        </select>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Price" class="form-label"></label>
-        <input asp-for="Price" class="form-control" />
-        <span asp-validation-for="Price" class="text-danger"></span>
-    </div>
-
-    <div>
-        <button type="submit" class="btn btn-primary">Save</button>
-        <a asp-action="Index" class="btn btn-link">Cancel</a>
-    </div>
-</form>
+</div>
