@@ -8,10 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Loans\Borrow.cshtml" />
     <Content Remove="Views\Loans\Index.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\Loans\Borrow.cshtml" />
     <None Include="Views\Loans\Index.cshtml" />
   </ItemGroup>
 

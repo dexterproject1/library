@@ -26,4 +26,37 @@ public class LoansController : Controller
         return View(loans);
     }
 
+    // Fills the Borrow form's two dropdowns from the database.
+    private async Task FillDropdownsAsync()
+    {
+        ViewBag.Members = new SelectList(await _members.GetAllAsync(), "MemberId", "FullName");
+        ViewBag.Books = new SelectList(await _books.GetAllAsync(), "BookId", "Title");
+    }
+
+    // GET /Loans/Borrow : the empty Borrow form.
+    public async Task<IActionResult> Borrow()
+    {
+        await FillDropdownsAsync();
+        return View(new BorrowForm());
+    }
+
+    // POST /Loans/Borrow : the form was submitted.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Borrow(BorrowForm form)
+    {
+        if (/* 1. every rule on the form was kept */)
+        {
+            // 2. Try to borrow the book, and keep the answer.
+            if (/* 3. the loan was saved */)
+            {
+                // 4. Go back to the list of loans.
+            }
+            // 5. Explain why nothing was saved.
+        }
+
+        // 6. Fill both dropdowns again.
+        // 7. Show the form again, with what was chosen.
+    }
+
 }

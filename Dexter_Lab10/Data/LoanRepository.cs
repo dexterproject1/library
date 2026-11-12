@@ -45,5 +45,23 @@ public class LoanRepository
 
         // 7. Give the list back.
     }
+    // BORROW: lend one book, unless the member already has MaxOpenLoans books out.
+    // The check and the INSERT run inside one transaction: both happen, or neither does.
+    public async Task<bool> BorrowAsync(long memberId, long bookId, int daysAllowed)
+    {
+        // 1. Open one connection to the database.
+        // 2. Start a transaction on that connection.
+        // 3. Lock this member's row: a second borrow for the same member waits until this one ends.
+        // 4. Count the books this member has out.
+        if (/* 5. the member is already at the limit */)
+        {
+            // 6. Undo the transaction: nothing is saved.
+            // 7. Report that nothing was borrowed.
+        }
+
+        // 8. Record the loan. The database fills loaned_on with today's date.
+        // 9. Make the transaction permanent.
+        // 10. Report that the book was borrowed.
+    }
 
 }
