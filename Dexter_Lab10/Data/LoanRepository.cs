@@ -64,4 +64,13 @@ public class LoanRepository
         // 10. Report that the book was borrowed.
     }
 
+    // RETURN: mark a loan as returned today. A loan already returned is left alone.
+    public async Task ReturnAsync(long loanId)
+    {
+        // 1. The SQL: today's date, set only on a loan not returned yet.
+        // 2. A command that will run the SQL.
+        // 3. Give the command the loan's id.
+        // 4. Run it.
+    }
+
 }

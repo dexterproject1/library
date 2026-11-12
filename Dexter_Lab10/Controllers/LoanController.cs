@@ -59,4 +59,13 @@ public class LoansController : Controller
         // 7. Show the form again, with what was chosen.
     }
 
+    // POST /Loans/Return/5 : the Return button was pressed.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Return(long id)
+    {
+        await _loans.ReturnAsync(id);
+        return RedirectToAction(nameof(Index));
+    }
+
 }
