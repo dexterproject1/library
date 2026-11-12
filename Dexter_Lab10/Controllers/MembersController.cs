@@ -77,26 +77,50 @@ public class MembersController : Controller
         return View(member);
     }
 
-    // POST /Members/Edit/5 : the changed form was submitted.
+    // POST /Members/Delete/5 : the delete was confirmed.
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(long id)
+    {
+        try
+        {
+            await _members.DeleteAsync(id);
+        }
+        catch (PostgresException ex) when (ex.SqlState == PostgresErrorCodes.ForeignKeyViolation)
+        {
+            var member = await _members.GetByIdAsync(id);
+            if (member == null)
+            {
+                return NotFound();
+            }
+            ViewBag.Error = "This member has loans on record, so the database will not delete them.";
+            return View("Delete", member);
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+
+
+    // POST /Members/Create : the form was submitted.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Member member)
+    public async Task<IActionResult> Create(Member member)
     {
-        if (/* 1. a rule on the form was broken */)
+        if (!ModelState.IsValid)
         {
-            // 2. Show the form again, with what was typed.
+            return View(member);
         }
 
         try
         {
-            // 3. Save the changes.
+            await _members.AddAsync(member);
         }
-        catch (PostgresException ex) when (/* 4. another member already uses this email */)
+        catch (PostgresException ex) when (ex.SqlState == PostgresErrorCodes.UniqueViolation)
         {
-            // 5. Put a message under the Email box.
-            // 6. Show the form again, with what was typed.
+            ModelState.AddModelError("Email", "Another member already uses this email.");
+            return View(member);
         }
 
-        // 7. The changes were saved: go back to the list.
+        return RedirectToAction(nameof(Index));
     }
 }

@@ -20,7 +20,7 @@ public class LoanRepository
     {
         return new LoanView
         {
-            LoanId = /* 1. the loan's id */,
+            LoanId = reader.GetInt64(0),
             MemberId = /* 2. the member's id */,
             MemberName = /* 3. the member's name */,
             BookTitle = /* 4. the book's title */,
