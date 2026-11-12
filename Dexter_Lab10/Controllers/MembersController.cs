@@ -77,27 +77,26 @@ public class MembersController : Controller
         return View(member);
     }
 
-    // POST /Members/Delete/5 : the delete was confirmed.
-    [HttpPost, ActionName("Delete")]
+    // POST /Members/Edit/5 : the changed form was submitted.
+    [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(long id)
+    public async Task<IActionResult> Edit(Member member)
     {
+        if (/* 1. a rule on the form was broken */)
+        {
+            // 2. Show the form again, with what was typed.
+        }
+
         try
         {
-            // 1. Delete the member.
+            // 3. Save the changes.
         }
-        catch (PostgresException ex) when (/* 2. the database refused because of a foreign key */)
+        catch (PostgresException ex) when (/* 4. another member already uses this email */)
         {
-            // 3. Load the member again, to show them on the page.
-            if (/* 4. there is no such member */)
-            {
-                // 5. Answer "not found".
-            }
-            // 6. Set the message the page will show.
-            // 7. Show the Delete page again, with the member.
+            // 5. Put a message under the Email box.
+            // 6. Show the form again, with what was typed.
         }
 
-        // 8. The member was deleted: go back to the list.
+        // 7. The changes were saved: go back to the list.
     }
-
 }
