@@ -19,6 +19,7 @@
                     <th class="ps-4">Name</th>
                     <th>Email</th>
                     <th>Member Type</th>
+                    <th class="text-end">Books out</th>
                     <th class="text-end pe-4" style="width:12rem">Actions</th>
                 </tr>
             </thead>
@@ -31,6 +32,7 @@
                             <td class="ps-4 fw-medium text-dark">@member.FullName</td>
                             <td class="text-muted">@(member.Email ?? "—")</td>
                             <td><span class="badge bg-secondary px-2 py-1">@member.MemberType</span></td>
+                            <td class="text-end">@member.OpenLoans</td>
                             <td class="text-end pe-4">
                                 <a asp-action="Details" asp-route-id="@member.MemberId" class="btn btn-sm btn-outline-primary">Loans</a>
                                 <a asp-action="Edit" asp-route-id="@member.MemberId" class="btn btn-sm btn-outline-secondary px-2 me-1">Edit</a>
