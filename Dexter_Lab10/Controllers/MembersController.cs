@@ -8,10 +8,13 @@ namespace library.Controllers;
 public class MembersController : Controller
 {
     private readonly MemberRepository _members;
+    private readonly LoanRepository _loans;
 
-    public MembersController(MemberRepository members)
+    // ASP.NET Core hands in the repositories, because Program.cs registered them.
+    public MembersController(MemberRepository members, LoanRepository loans)
     {
         _members = members;
+        _loans = loans;
     }
 
     // GET /Members : the list of members.
@@ -37,7 +40,16 @@ public class MembersController : Controller
             return View(member);
         }
 
-        await _members.AddAsync(member);
+        try
+        {
+            await _members.AddAsync(member);
+        }
+        catch (PostgresException ex) when (ex.SqlState == PostgresErrorCodes.UniqueViolation)
+        {
+            ModelState.AddModelError("Email", "Another member already uses this email.");
+            return View(member);
+        }
+
         return RedirectToAction(nameof(Index));
     }
 
@@ -100,27 +112,19 @@ public class MembersController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-
-    // POST /Members/Create : the form was submitted.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(Member member)
+    // GET /Members/Details/5 : one member and their loans.
+    public async Task<IActionResult> Details(long id)
     {
-        if (!ModelState.IsValid)
+        var member = await _members.GetByIdAsync(id);
+        if (member == null)
         {
-            return View(member);
+            return NotFound();
         }
-
-        try
+        var details = new MemberDetails
         {
-            await _members.AddAsync(member);
-        }
-        catch (PostgresException ex) when (ex.SqlState == PostgresErrorCodes.UniqueViolation)
-        {
-            ModelState.AddModelError("Email", "Another member already uses this email.");
-            return View(member);
-        }
-
-        return RedirectToAction(nameof(Index));
+            Member = member,
+            Loans = await _loans.GetByMemberAsync(id)
+        };
+        return View(details);
     }
 }

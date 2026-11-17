@@ -32,6 +32,7 @@
                             <td class="text-muted">@(member.Email ?? "—")</td>
                             <td><span class="badge bg-secondary px-2 py-1">@member.MemberType</span></td>
                             <td class="text-end pe-4">
+                                <a asp-action="Details" asp-route-id="@member.MemberId" class="btn btn-sm btn-outline-primary">Loans</a>
                                 <a asp-action="Edit" asp-route-id="@member.MemberId" class="btn btn-sm btn-outline-secondary px-2 me-1">Edit</a>
                                 <a asp-action="Delete" asp-route-id="@member.MemberId" class="btn btn-sm btn-outline-danger px-2">Delete</a>
                             </td>
